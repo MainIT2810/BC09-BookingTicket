@@ -18,11 +18,14 @@ function App() {
         <HomeTemplate path="/news" exact Component={News} />
         <Route path="/login" exact Component={Login} />
         <Route path="/register" exact Component={Register} />
+        <HomeTemplate path="/" exact Component={Home} />
+
       </Switch>
     </Router>
   );
 }
 
 export default App;
+
 
 

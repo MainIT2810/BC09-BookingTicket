@@ -6,28 +6,23 @@ import HomeCarousel from "./Layout/HomeCarousel/HomeCarousel";
 
 
 
-export const HomeTemplate = (props) => {
-  //path, exact, Component
+export const HomeTemplate = (props) => { //path, exact, Component
 
-  const { Component, ...restProps } = props;
+    const { Component, ...restProps } = props;
 
-  return (
-    <Route
-      {...restProps}
-      render={(propsRoute) => {
-        //props.location,props.history,props.match
+    return <Route {...restProps} render={(propsRoute) => { //props.location,props.history,props.match
 
-        return (
-          <Fragment>
-            <Header {...propsRoute} />
-
+        return <Fragment>
+            <Header {...propsRoute}/>
             <HomeCarousel {...propsRoute} />
+
             <Component {...propsRoute} />
+
+            
             <hr className="mt-5"/>
-            <Footer {...propsRoute} />
-          </Fragment>
-        );
-      }}
-    />
-  );
-};
+            <Footer />
+           
+        </Fragment>
+    }} />
+
+}

@@ -24,21 +24,12 @@ export default class Demo extends React.Component {
                     <TabPane tab={<img src="https://picsum.photos/200" className="rounded-full" width="50" />} key="2">
                         Content of Tab 2
                     </TabPane>
-
                     <TabPane tab={<img src="https://picsum.photos/200" className="rounded-full" width="50" />} key="3">
                         Content of Tab 3
                     </TabPane>
-
-                    <TabPane tab={<img src="https://picsum.photos/200" className="rounded-full" width="50" />} key="4">
-                        Content of Tab 4
-                    </TabPane>
-
-                    <TabPane tab={<img src="https://picsum.photos/200" className="rounded-full" width="50" />} key="5">
-                        Content of Tab 5
-                    </TabPane>
-
                 </Tabs>
             </>
         );
     }
 }
+
