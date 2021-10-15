@@ -1,11 +1,12 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 export default function Header(props) {
   return (
-    <header className="p-4 bg-coolGray-100 text-coolGray-800 bg-opacity-40 bg-black text-white fixed w-full z-10">
+    <header className="p-4 bg-coolGray-100 text-coolGray-800 bg-opacity-40 bg-white fixed w-full z-10">
       <div className="container flex justify-between h-16 mx-auto">
         <a
-          href="#"
+          href="#home"
           aria-label="Back to homepage"
           className="flex items-center p-2"
         >
@@ -16,28 +17,31 @@ export default function Header(props) {
         </a>
         <ul className="items-stretch hidden space-x-3 lg:flex">
           <li className="flex">
-            <a
-              href="#"
-              className="flex items-center -mb-0.5 border-b-2 px-4 border-transparent text-violet-600 border-violet-600 text-white"
+            <NavLink
+              to="/home"
+              className="flex items-center -mb-0.5 border-b-2 px-4 border-transparent text-black"
+              activeClassName="border-b-2 border-yellow-500"
             >
               Home
-            </a>
+            </NavLink>
           </li>
           <li className="flex">
-            <a
-              href="#"
-              className="flex items-center -mb-0.5 border-b-2 px-4 border-transparent text-white"
+            <NavLink
+              to="/contact"
+              className="flex items-center -mb-0.5 border-b-2 px-4 border-transparent text-black"
+              activeClassName="border-b-2 border-yellow-500"
             >
               Contact
-            </a>
+            </NavLink>
           </li>
           <li className="flex">
-            <a
-              href="#"
-              className="flex items-center -mb-0.5 border-b-2 px-4 border-transparent text-white"
+            <NavLink
+              to="/news"
+              className="flex items-center -mb-0.5 border-b-2 px-4 border-transparent text-black"
+              activeClassName="border-b-2 border-yellow-500"
             >
-              New
-            </a>
+              News
+            </NavLink>
           </li>
         </ul>
         <div className="items-center flex-shrink-0 hidden lg:flex">
