@@ -27,24 +27,26 @@ export const layDanhSachHeThongRapAction = () => {
 
 
 
-// export const layThongTinChiTietPhim = (id) => {
-//     return async dispatch => {
-//         try{
-//             const result = await quanLyRapService.layThongTinLichChieuPhim(id);
+export const layThongTinChiTietPhim = (id) => {
+    return async dispatch => {
+        try{
+            const result = await quanLyRapService.layThongTinLichChieuPhim(id);
 
-//             console.log('result',result);
-//             //Lấy được dữ liệu từ api về  => reducer
+            console.log('result',result);
+            //Lấy được dữ liệu từ api về  => reducer
 
-//             dispatch({
-//                 type:SET_CHI_TIET_PHIM,
-//                 filmDetail: result.data.content
-//             })
+            dispatch({
+                type:SET_CHI_TIET_PHIM,
+                filmDetail: result.data.content
+            })
 
 
-//         }
-//         catch(errors) {
-//             console.log('errors',errors.response?.data)
+        }
+        catch(errors) {
+            console.log('errors',errors.response?.data)
 
-//         }
-//     }
-// }
+        }
+    }
+
+
+}

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import MultipleRowSlick from '../../components/RSlick/MultipleRowSlick'
 import { layDanhSachPhimAction } from '../../redux/actions/QuanLyPhimActions';
 import { layDanhSachHeThongRapAction } from '../../redux/actions/QuanLyRapAction';
-// import HomeCarousel from '../../templates/HomeTemplate/Layout/HomeCarousel/HomeCarousel';
+import HomeCarousel from '../../templates/HomeTemplate/Layout/HomeCarousel/HomeCarousel';
 
 export default function Home(props) {
 
@@ -13,9 +13,8 @@ export default function Home(props) {
     const {heThongRapChieu} = useSelector(state => state.QuanLyRapReducer);
     const dispatch = useDispatch();
     console.log('propsHome', arrFilm);
-
-    
     // props.match.params
+
     // const renderFilms = () => {
     //     return arrFilm.map((phim, index) => {
     //         return <Film key={index} />
@@ -34,7 +33,7 @@ export default function Home(props) {
     
     return (
         <div>
-            {/* <HomeCarousel /> */}
+            <HomeCarousel />
 
             <section className="text-gray-600 body-font" >
                 <div className="container px-5 py-24 mx-auto " >
