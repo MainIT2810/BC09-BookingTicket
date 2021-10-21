@@ -44,7 +44,7 @@ export default function Footer(props) {
                     </div>
                 </div>
                 <div className="grid justify-center pt-6 lg:justify-between text-white">
-                    <div className="flex flex-col self-center text-sm text-center md:block lg:col-start-1 md:space-x-6 text-center">
+                    <div className="flex flex-col self-center text-sm text-center md:block lg:col-start-1 md:space-x-6">
                         <span>©2021 All rights reserved</span>
                     </div>
 
