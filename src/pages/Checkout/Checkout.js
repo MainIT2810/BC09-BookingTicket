@@ -1,15 +1,35 @@
 import React, { useEffect } from "react";
+import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { layChiTietPhongVeAction } from "../../redux/actions/QuanLyDatVeActions";
 import style from "./Checkout.module.css";
+import "./Checkout.css";
+import { CheckOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
 export default function Checkout(props) {
   const { userLogin } = useSelector((state) => state.QuanLyNguoiDungReducer);
   const { chiTietPhongVe } = useSelector((state) => state.QuanLyDatVeReducer);
   const dispatch = useDispatch();
   useEffect(() => {
-      const action = layChiTietPhongVeAction(props.match.params.id);
-      dispatch(action);
+    const action = layChiTietPhongVeAction(props.match.params.id);
+    dispatch(action);
   }, []);
+  const { thongTinPhim, danhSachGhe } = chiTietPhongVe;
+  const renderSeats = () => {
+    return danhSachGhe.map((ghe, index) => {
+
+      let classGheVip = ghe.loaiGhe === 'Vip' ? 'gheVip' : '';
+      let classGheDaDat = ghe.daDat === true ? 'gheDaDat' : '';
+      return (
+        <Fragment key={index}>
+          <button className={`ghe ${classGheVip} ${classGheDaDat}`}>
+            {ghe.daDat ? <CloseOutlined style={{marginBottom:7.5}}/> :ghe.stt}
+          </button>
+          {(index+1) % 16 === 0 ? <br/>: ""}
+        </Fragment>
+      );
+    });
+  };
+
   return (
     <div className=" min-h-screen mt-5">
       <div className="grid grid-cols-12">
@@ -19,17 +39,23 @@ export default function Checkout(props) {
               className="bg-black"
               style={{ width: "80%", height: 15 }}
             ></div>
+
             <div className={`${style["trapezoid"]} text-center`}>
               <h3 className="mt-3 text-black">Màn Hình</h3>
             </div>
+            <div>{renderSeats()}</div>
           </div>
         </div>
         <div className="col-span-3">
-          <h3 className="text-center text-2xl text-green-800"> 0đ</h3>
+          <h3 className="text-center text-4xl text-green-800"> 0đ</h3>
           <hr />
-          <h3 className="text-xl">Lật mặt 48h</h3>
-          <p>Địa điểm: BHD Star - Vicomn 3/2</p>
-          <p>Ngày chiếu: 25/04/2021 - 12:05 Rạp 5</p>
+          <h3 className="text-xl mt-2">{thongTinPhim.tenPhim}</h3>
+          <p>
+            Địa điểm: {thongTinPhim.tenCumRap} - {thongTinPhim.tenRap}
+          </p>
+          <p>
+            Ngày chiếu: {thongTinPhim.ngayChieu} - {thongTinPhim.gioChieu}
+          </p>
           <hr />
           <div className="flex flex-row my-5">
             <div className="w-4/5">
