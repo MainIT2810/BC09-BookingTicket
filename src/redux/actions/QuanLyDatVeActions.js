@@ -1,6 +1,8 @@
 import { quanLyDatVeService } from "../../services/QuanLyDatVeService";
 import { ThongTinDatVe } from "../../_core/models/ThongTinDatVe";
-import { SET_CHI_TIET_PHONG_VE } from "./types/QuanLyDatVeType";
+import { displayloadingAction, hideloadingAction } from "./LoadingAction";
+// import { DISPLAY_LOADING, HIDE_LOADING } from "./types/LoadingType";
+import { CHUYEN_TAB, DAT_VE_HOAN_TAT, SET_CHI_TIET_PHONG_VE } from "./types/QuanLyDatVeType";
 
 
 
@@ -35,10 +37,21 @@ export const datVeAction = (thongTinDatVe = new ThongTinDatVe()) => {
 
     return async dispatch => {
         try {
+            dispatch(displayloadingAction);
+
+
             const result = await quanLyDatVeService.datVe(thongTinDatVe);
             console.log(result.data.content);
+            // Đặt vé thành công gọi load lại phòng vé
+            await dispatch(layChiTietPhongVeAction(thongTinDatVe.maLichChieu));
+            await dispatch({
+                type: DAT_VE_HOAN_TAT
+            });
+            await dispatch(hideloadingAction);
+            dispatch({type: CHUYEN_TAB});
 
         } catch (error) {
+            dispatch(hideloadingAction);
             console.log(error.response.data);
         }
     }
