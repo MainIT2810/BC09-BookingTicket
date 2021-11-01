@@ -1,11 +1,19 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { layChiTietPhongVeAction } from "../../redux/actions/QuanLyDatVeActions";
+import {
+  datGheAction,
+  layChiTietPhongVeAction,
+} from "../../redux/actions/QuanLyDatVeActions";
 import style from "./Checkout.module.css";
-import { CheckOutlined, CloseOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  UserOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 import "./Checkout.css";
-import { DAT_VE } from "../../redux/actions/types/QuanLyDatVeType";
+import { CHUYEN_TAB, DAT_VE } from "../../redux/actions/types/QuanLyDatVeType";
 import _ from "lodash";
 import { ThongTinDatVe } from "../../_core/models/ThongTinDatVe";
 import { datVeAction } from "../../redux/actions/QuanLyDatVeActions";
@@ -13,12 +21,13 @@ import { datVeAction } from "../../redux/actions/QuanLyDatVeActions";
 import { Tabs } from "antd";
 import { layThongTinNguoiDungAction } from "../../redux/actions/QuanLyNguoiDungAction";
 import moment from "moment";
+import { connection } from "../../index";
 
 function Checkout(props) {
   const { userLogin } = useSelector((state) => state.QuanLyNguoiDungReducer);
-  const { chiTietPhongVe, danhSachGheDangDat } = useSelector(
-    (state) => state.QuanLyDatVeReducer
-  );
+  const { chiTietPhongVe, danhSachGheDangDat, danhSachGheKhachDat } =
+    useSelector((state) => state.QuanLyDatVeReducer);
+
   const dispatch = useDispatch();
   console.log("danhSachGheDangDat", danhSachGheDangDat);
   useEffect(() => {
@@ -26,7 +35,52 @@ function Checkout(props) {
     const action = layChiTietPhongVeAction(props.match.params.id);
     //Dispatch function này đi
     dispatch(action);
+
+    //Có 1 client nào thực hiện việc đặt vé thành công mình sẽ load lại danh sách phòng vé của lịch chiếu đó
+    connection.on("datVeThanhCong", () => {
+      dispatch(action);
+    });
+
+    //Vừa vào trang load tất cả ghế của các người khác đang đặt
+    connection.invoke("loadDanhSachGhe", props.match.params.id);
+
+    //Load danh sách ghế đang đặt từ server về (lắng nghe tín hiệu từ server trả về)
+    connection.on("loadDanhSachGheDaDat", (dsGheKhachDat) => {
+      console.log("danhSachGheKhachDat", dsGheKhachDat);
+      //Bước 1: Loại mình ra khỏi danh sách
+      dsGheKhachDat = dsGheKhachDat.filter(
+        (item) => item.taiKhoan !== userLogin.taiKhoan
+      );
+      //Bước 2 gộp danh sách ghế khách đặt ở tất cả user thành 1 mảng chung
+
+      let arrGheKhachDat = dsGheKhachDat.reduce((result, item, index) => {
+        let arrGhe = JSON.parse(item.danhSachGhe);
+
+        return [...result, ...arrGhe];
+      }, []);
+
+      //Đưa dữ liệu ghế khách đặt cập nhật redux
+      arrGheKhachDat = _.uniqBy(arrGheKhachDat, "maGhe");
+
+      //Đưa dữ liệu ghế khách đặt về redux
+      dispatch({
+        type: "DAT_GHE",
+        arrGheKhachDat,
+      });
+    });
+
+    //Cài đặt sự kiện khi reload trang
+    window.addEventListener("beforeunload", clearGhe);
+
+    return () => {
+      clearGhe();
+      window.removeEventListener("beforeunload", clearGhe);
+    };
   }, []);
+
+  const clearGhe = function (event) {
+    connection.invoke("huyDat", userLogin.taiKhoan, props.match.params.id);
+  };
 
   console.log({ chiTietPhongVe });
   const { thongTinPhim, danhSachGhe } = chiTietPhongVe;
@@ -41,12 +95,21 @@ function Checkout(props) {
         (gheDD) => gheDD.maGhe === ghe.maGhe
       );
 
+      //Kiểm tra từng render xem có phải ghế khách đặt hay không
+      let classGheKhachDat = "";
+      let indexGheKD = danhSachGheKhachDat.findIndex(
+        (gheKD) => gheKD.maGhe === ghe.maGhe
+      );
+      if (indexGheKD !== -1) {
+        classGheKhachDat = "gheKhachDat";
+      }
+
       let classGheDaDuocDat = "";
       if (userLogin.taiKhoan === ghe.taiKhoanNguoiDat) {
         classGheDaDuocDat = "gheDaDuocDat";
       }
 
-      if (indexGheDD !== -1) {
+      if (indexGheDD != -1) {
         classGheDaDat = "gheDangDat";
       }
 
@@ -54,17 +117,15 @@ function Checkout(props) {
         <Fragment key={index}>
           <button
             onClick={() => {
-              dispatch({
-                type: DAT_VE,
-                gheDuocChon: ghe,
-              });
+              const action = datGheAction(ghe, props.match.params.id);
+              dispatch(action);
             }}
-            disabled={ghe.daDat}
-            className={`ghe ${classGheVip} ${classGheDaDat} ${classGheDangDat} ${classGheDaDuocDat} text-center`}
+            disabled={ghe.daDat || classGheKhachDat !== ""}
+            className={`ghe ${classGheVip} ${classGheDaDat} ${classGheDangDat} ${classGheDaDuocDat} ${classGheKhachDat} text-center`}
             key={index}
           >
             {ghe.daDat ? (
-              classGheDaDuocDat !== "" ? (
+              classGheDaDuocDat != "" ? (
                 <UserOutlined
                   style={{ marginBottom: 7.5, fontWeight: "bold" }}
                 />
@@ -73,6 +134,10 @@ function Checkout(props) {
                   style={{ marginBottom: 7.5, fontWeight: "bold" }}
                 />
               )
+            ) : classGheKhachDat !== "" ? (
+              <SmileOutlined
+                style={{ marginBottom: 7.5, fontWeight: "bold" }}
+              />
             ) : (
               ghe.stt
             )}
@@ -108,6 +173,7 @@ function Checkout(props) {
                   <th>Ghế vip</th>
                   <th>Ghế đã đặt</th>
                   <th>Ghế mình đặt</th>
+                  <th>Ghế khách đang đặt</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -145,6 +211,14 @@ function Checkout(props) {
                   </td>
                   <td>
                     <button className="ghe gheDaDuocDat text-center">
+                      {" "}
+                      <CheckOutlined
+                        style={{ marginBottom: 7.5, fontWeight: "bold" }}
+                      />{" "}
+                    </button>{" "}
+                  </td>
+                  <td>
+                    <button className="ghe gheKhachDat text-center">
                       {" "}
                       <CheckOutlined
                         style={{ marginBottom: 7.5, fontWeight: "bold" }}
@@ -236,17 +310,23 @@ function Checkout(props) {
 
 const { TabPane } = Tabs;
 
-export default function CheckoutTab (props) {
-    const {tabActive} = useSelector(state => state.QuanLyDatVeReducer);
-    const dispatch = useDispatch();
+export default function CheckoutTab(props) {
+  const { tabActive } = useSelector((state) => state.QuanLyDatVeReducer);
+  const dispatch = useDispatch();
+  console.log("tabActive", tabActive);
   return (
     <div className="p-5">
-      <Tabs defaultActiveKey="1" activeKey={tabActive} onChange={(key)=>{
-           dispatch({
-            type: 'CHANGE_TAB_ACTIVE',
+      <Tabs
+        defaultActiveKey="1"
+        activeKey={tabActive}
+        onChange={(key) => {
+          // console.log('key',  key)
+          dispatch({
+            type: "CHANGE_TAB_ACTIVE",
             number: key.toString(),
-        });
-      }}>
+          });
+        }}
+      >
         <TabPane tab="01 CHỌN GHẾ & THANH TOÁN" key="1">
           <Checkout {...props} />
         </TabPane>
@@ -330,7 +410,18 @@ function KetQuaDatVe(props) {
               Hãy xem thông tin địa và thời gian để xem phim vui vẻ bạn nhé !
             </p>
           </div>
-          <div className="flex flex-wrap -m-2">{renderTicketItem()}</div>
+          <div className="flex flex-wrap -m-2">
+            {renderTicketItem()}
+            {/* <div className="p-2 lg:w-1/3 md:w-1/2 w-full">
+                        <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg">
+                            <img alt="team" className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4" src="https://picsum.photos/200/200" />
+                            <div className="flex-grow">
+                                <h2 className="text-gray-900 title-font font-medium">Lật mặt 48h</h2>
+                                <p className="text-gray-500">10:20 Rạp 5, Hệ thống rạp cinestar bhd </p>
+                            </div>
+                        </div>
+                    </div> */}
+          </div>
         </div>
       </section>
     </div>
