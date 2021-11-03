@@ -1,6 +1,6 @@
 import './App.css';
 import { createBrowserHistory } from 'history';
-import { Route, Router, Switch } from 'react-router';
+import { Router, Switch } from 'react-router';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate'
 import Home from './pages/Home/Home';
 import Contact from './pages/Contact/Contact';
@@ -12,6 +12,7 @@ import  CheckoutTemplate  from './templates/CheckoutTemplate/CheckoutTemplate';
 import Checkout from './pages/Checkout/Checkout';
 import { UserTemplate } from './templates/UserTemplate/UserTemplate';
 import Loading from './components/Loading/Loading';
+import Profile from './pages/Profile/Profile';
 
 export const history = createBrowserHistory();
 
@@ -24,11 +25,15 @@ function App() {
         <HomeTemplate path="/contact" exact Component={Contact} />
         <HomeTemplate path="/news" exact Component={News} />
         <HomeTemplate path="/detail/:id" exact Component={Detail} />
-        <Route path="/register" exact component={Register} />
-
-        <CheckoutTemplate path="/checkout/:id" exact component={Checkout} />
+        <HomeTemplate path="/profile" exact Component={Profile} />
 
         <UserTemplate path="/login" exact Component={Login} />
+
+        <UserTemplate path="/register" exact Component={Register} />
+        
+        <CheckoutTemplate path="/checkout/:id" exact component={Checkout} />
+
+       
         
         <HomeTemplate path="/" exact Component={Home} />
 

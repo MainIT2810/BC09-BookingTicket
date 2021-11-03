@@ -40,9 +40,7 @@ export default function Home(props) {
                 <div className="container px-5 py-24 mx-auto " >
 
                     <MultipleRowSlick arrFilm={arrFilm}/>
-                    {/* <div className="flex flex-wrap  " style={{ justifyContent: 'center' }}>
-                        {renderFilms()}
-                    </div> */}
+                  
                 </div>
             </section>
 

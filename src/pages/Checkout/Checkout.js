@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,9 +11,10 @@ import {
   CloseOutlined,
   UserOutlined,
   SmileOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import "./Checkout.css";
-import { CHUYEN_TAB, DAT_VE } from "../../redux/actions/types/QuanLyDatVeType";
+
 import _ from "lodash";
 import { ThongTinDatVe } from "../../_core/models/ThongTinDatVe";
 import { datVeAction } from "../../redux/actions/QuanLyDatVeActions";
@@ -22,6 +23,10 @@ import { Tabs } from "antd";
 import { layThongTinNguoiDungAction } from "../../redux/actions/QuanLyNguoiDungAction";
 import moment from "moment";
 import { connection } from "../../index";
+import { history } from "../../App";
+import { TOKEN, USER_LOGIN } from "../../util/settings/config";
+import { NavLink } from "react-router-dom";
+import Avatar from "antd/lib/avatar/avatar";
 
 function Checkout(props) {
   const { userLogin } = useSelector((state) => state.QuanLyNguoiDungReducer);
@@ -313,10 +318,53 @@ const { TabPane } = Tabs;
 export default function CheckoutTab(props) {
   const { tabActive } = useSelector((state) => state.QuanLyDatVeReducer);
   const dispatch = useDispatch();
+
+  const { userLogin } = useSelector((state) => state.QuanLyNguoiDungReducer);
+  useEffect(() => {
+    return () => {
+      dispatch({
+        type: "CHANGE_TAB_ACTIVE",
+        number: "1",
+      });
+    };
+  }, []);
+
+  const operations = (
+    <Fragment>
+      {!_.isEmpty(userLogin) ? (
+        <Fragment>
+          {" "}
+          <button
+            onClick={() => {
+              history.push("/profile");
+            }}
+          >
+            {" "}
+            <Avatar src="https://joeschmoe.io/api/v1/random" /> {userLogin.taiKhoan}
+          </button>{" "}
+          <button
+            onClick={() => {
+              localStorage.removeItem(USER_LOGIN);
+              localStorage.removeItem(TOKEN);
+              history.push("/home");
+              window.location.reload();
+            }}
+            className="text-blue-800"
+          >
+            Đăng xuất
+          </button>{" "}
+        </Fragment>
+      ) : (
+        ""
+      )}
+    </Fragment>
+  );
+
   console.log("tabActive", tabActive);
   return (
     <div className="p-5">
       <Tabs
+        tabBarExtraContent={operations}
         defaultActiveKey="1"
         activeKey={tabActive}
         onChange={(key) => {
@@ -333,6 +381,23 @@ export default function CheckoutTab(props) {
         <TabPane tab="02 KẾT QUẢ ĐẶT VÉ" key="2">
           <KetQuaDatVe {...props} />
         </TabPane>
+        <TabPane
+          tab={
+            <div
+              className="text-center"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <NavLink to="/">
+                <HomeOutlined style={{ marginLeft: 10, fontSize: 25 }} />
+              </NavLink>
+            </div>
+          }
+          key="3"
+        ></TabPane>
       </Tabs>
     </div>
   );
@@ -410,18 +475,7 @@ function KetQuaDatVe(props) {
               Hãy xem thông tin địa và thời gian để xem phim vui vẻ bạn nhé !
             </p>
           </div>
-          <div className="flex flex-wrap -m-2">
-            {renderTicketItem()}
-            {/* <div className="p-2 lg:w-1/3 md:w-1/2 w-full">
-                        <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg">
-                            <img alt="team" className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4" src="https://picsum.photos/200/200" />
-                            <div className="flex-grow">
-                                <h2 className="text-gray-900 title-font font-medium">Lật mặt 48h</h2>
-                                <p className="text-gray-500">10:20 Rạp 5, Hệ thống rạp cinestar bhd </p>
-                            </div>
-                        </div>
-                    </div> */}
-          </div>
+          <div className="flex flex-wrap -m-2">{renderTicketItem()}</div>
         </div>
       </section>
     </div>
