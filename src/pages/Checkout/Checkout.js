@@ -18,7 +18,6 @@ import "./Checkout.css";
 import _ from "lodash";
 import { ThongTinDatVe } from "../../_core/models/ThongTinDatVe";
 import { datVeAction } from "../../redux/actions/QuanLyDatVeActions";
-
 import { Tabs } from "antd";
 import { layThongTinNguoiDungAction } from "../../redux/actions/QuanLyNguoiDungAction";
 import moment from "moment";
@@ -34,7 +33,6 @@ function Checkout(props) {
     useSelector((state) => state.QuanLyDatVeReducer);
 
   const dispatch = useDispatch();
-  console.log("danhSachGheDangDat", danhSachGheDangDat);
   useEffect(() => {
     //Gọi hàm tạo ra 1 async function
     const action = layChiTietPhongVeAction(props.match.params.id);
@@ -51,7 +49,6 @@ function Checkout(props) {
 
     //Load danh sách ghế đang đặt từ server về (lắng nghe tín hiệu từ server trả về)
     connection.on("loadDanhSachGheDaDat", (dsGheKhachDat) => {
-      console.log("danhSachGheKhachDat", dsGheKhachDat);
       //Bước 1: Loại mình ra khỏi danh sách
       dsGheKhachDat = dsGheKhachDat.filter(
         (item) => item.taiKhoan !== userLogin.taiKhoan
@@ -87,7 +84,6 @@ function Checkout(props) {
     connection.invoke("huyDat", userLogin.taiKhoan, props.match.params.id);
   };
 
-  console.log({ chiTietPhongVe });
   const { thongTinPhim, danhSachGhe } = chiTietPhongVe;
 
   const renderSeats = () => {
@@ -114,7 +110,7 @@ function Checkout(props) {
         classGheDaDuocDat = "gheDaDuocDat";
       }
 
-      if (indexGheDD != -1) {
+      if (indexGheDD !== -1) {
         classGheDaDat = "gheDangDat";
       }
 
@@ -130,7 +126,7 @@ function Checkout(props) {
             key={index}
           >
             {ghe.daDat ? (
-              classGheDaDuocDat != "" ? (
+              classGheDaDuocDat !== "" ? (
                 <UserOutlined
                   style={{ marginBottom: 7.5, fontWeight: "bold" }}
                 />
@@ -284,8 +280,8 @@ function Checkout(props) {
           </div>
           <hr />
           <div className="my-5">
-            <i>Phone</i> <br />
-            {userLogin.soDT}
+            <i>Họ Và Tên</i> <br />
+            {userLogin.hoTen}
           </div>
           <hr />
           <div
@@ -340,7 +336,7 @@ export default function CheckoutTab(props) {
             }}
           >
             {" "}
-            <Avatar src="https://joeschmoe.io/api/v1/random" /> {userLogin.taiKhoan}
+            <Avatar src="https://joeschmoe.io/api/v1/random" /> {userLogin.hoTen}
           </button>{" "}
           <button
             onClick={() => {
@@ -359,8 +355,6 @@ export default function CheckoutTab(props) {
       )}
     </Fragment>
   );
-
-  console.log("tabActive", tabActive);
   return (
     <div className="p-5">
       <Tabs
@@ -415,8 +409,6 @@ function KetQuaDatVe(props) {
     const action = layThongTinNguoiDungAction();
     dispatch(action);
   }, []);
-
-  console.log("thongTinNguoiDung", thongTinNguoiDung);
 
   const renderTicketItem = function () {
     return thongTinNguoiDung.thongTinDatVe?.map((ticket, index) => {

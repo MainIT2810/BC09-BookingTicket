@@ -52,7 +52,7 @@ export default function Header(props) {
           }}
           className="self-center px-8 py-3 rounded"
         >
-          <Avatar src="https://joeschmoe.io/api/v1/random" /> {userLogin.taiKhoan}
+          <Avatar src="https://joeschmoe.io/api/v1/random" /> {userLogin.hoTen}
         </button>
         <button
           onClick={() => {

@@ -17,6 +17,11 @@ export const dangNhapAction = (thongTinDangNhap) => {
           type: DANG_NHAP_ACTION,
           thongTinDangNhap: result.data.content,
         });
+        swal({
+          title: "Đăng nhập thành công",
+          icon: "success",
+          button: "OK",
+        });
         //Chuyển hướng đăng nhập về trang trước đó
         history.push('/home');
       }

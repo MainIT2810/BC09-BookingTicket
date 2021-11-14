@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Tabs, Radio, Space } from "antd";
+import { Tabs } from "antd";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import moment from "moment";
@@ -21,7 +21,7 @@ export default class Demo extends React.PureComponent {
       return (
         <TabPane
           tab={
-            <img src={heThongRap.logo} className="rounded-full" width="50" />
+            <img src={heThongRap.logo} className="rounded-full" width="50"  alt="logo rap"/>
           }
           key={index}
         >
@@ -33,7 +33,7 @@ export default class Demo extends React.PureComponent {
                     <div style={{ width: "300px", display: "flex" }}>
                       <img
                         src="https://s3img.vcdn.vn/123phim/2018/09/ddc-dong-da-15379624326697.jpg"
-                        width="50"
+                        width="50" alt="rap"
                       />{" "}
                       <br />
                       <div className="text-left ml-2">
