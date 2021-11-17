@@ -82,6 +82,8 @@ export const datGheAction = (ghe,maLichChieu) => {
         let taiKhoan = getState().QuanLyNguoiDungReducer.userLogin.taiKhoan;
 
         console.log('danhSachGheDangDat',danhSachGheDangDat);
+        console.log('taiKhoan',taiKhoan);
+        console.log('maLichChieu',maLichChieu);
         //Biến mảng thành chuỗi
         danhSachGheDangDat = JSON.stringify(danhSachGheDangDat);
 

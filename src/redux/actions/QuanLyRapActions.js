@@ -4,6 +4,7 @@ import { SET_CHI_TIET_PHIM, SET_HE_THONG_RAP_CHIEU } from "./types/QuanLyRapType
 
 
 export const layDanhSachHeThongRapAction = () => {
+    console.log('abc')
     return async dispatch => {
         try{
             const result = await quanLyRapService.layDanhSachHeThongRap();
