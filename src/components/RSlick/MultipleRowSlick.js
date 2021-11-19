@@ -38,7 +38,7 @@ const settings = {
   dots: false,
   speed: 500,
   slidesToShow: 4,
-  slidesToScroll: 4,
+  slidesToScroll: 2,
   infinity: true,
   arrows: true,
   prevArrow: <PrevArrow />,
@@ -101,14 +101,17 @@ const MultipleRowSlick = (props) => {
         const action = { type: SET_FILM_DANG_CHIEU }
         dispatch(action);
       }}>PHIM ĐANG CHIẾU</button>
+
       <button className={`${styleSlick[activeClassSC]} px-8 py-3 font-semibold rounded bg-white text-gray-800 border-gray-800 border`} onClick={() => {
         const action = { type: SET_FILM_SAP_CHIEU }
         dispatch(action);
       }}>PHIM SẮP CHIẾU</button>
+
+
       <Slider {...settings} >
         {renderFilms()}
       </Slider>
-      
+
     </div>
   );
 };

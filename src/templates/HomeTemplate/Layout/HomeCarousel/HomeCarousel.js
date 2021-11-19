@@ -3,7 +3,6 @@ import { Carousel } from 'antd';
 import { useSelector, useDispatch } from 'react-redux'
 import { getCarouselAction } from '../../../../redux/actions/CarouselActions';
 import './HomeCarousel.css';
-import BookingTab from '../../../../components/BookingTab/BookingTab';
 
 const contentStyle = {
     height: '750px',
@@ -51,7 +50,7 @@ export default function HomeCarousel(props) {
             <Carousel effect='fade' style={{ width: '100%', padding: 0, margin: 0 }} >
                 {renderImg()}
             </Carousel>
-            <BookingTab />
+           
         </div>
     )
 }
