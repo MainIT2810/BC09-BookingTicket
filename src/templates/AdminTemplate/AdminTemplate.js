@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router";
 import { TOKEN, USER_LOGIN } from "../../util/settings/config";
 import { Layout, Menu, Breadcrumb } from "antd";
-import { DesktopOutlined, FileOutlined, UserOutlined } from "@ant-design/icons";
+import { FileOutlined, UserOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import _ from "lodash";
 import { history } from "../../App";
@@ -90,10 +90,17 @@ const AdminTemplate = (props) => {
                                     />
                                 </div>
                                 <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-                                    <Menu.Item key="1" icon={<UserOutlined />}>
-                                        <NavLink to="/admin/users">Users</NavLink>
-                                    </Menu.Item>
-                                    <SubMenu key="sub1" icon={<FileOutlined />} title="Films">
+                                    <SubMenu key="sub1" icon={<UserOutlined />} title="Quản Lý User">
+                                        <Menu.Item key="8" icon={<UserOutlined />}>
+                                            <NavLink to="/admin/users">Duyệt User</NavLink>
+                                        </Menu.Item>
+
+                                        <Menu.Item key="9" icon={<UserOutlined />}>
+                                            <NavLink to="/admin/users/addnew">Thêm User</NavLink>
+                                        </Menu.Item>
+                                    </SubMenu>
+                                    
+                                    <SubMenu key="sub2" icon={<FileOutlined />} title="Films">
                                         <Menu.Item key="10" icon={<FileOutlined />}>
                                             <NavLink to="/admin/films">Films</NavLink>
                                         </Menu.Item>
@@ -101,21 +108,8 @@ const AdminTemplate = (props) => {
                                             <NavLink to="/admin/films/addnew">Add new</NavLink>
                                         </Menu.Item>
                                     </SubMenu>
-                                    <Menu.Item key="3" icon={<DesktopOutlined />}>
-                                        <NavLink to="/admin/showtimes">Showtime</NavLink>
-                                    </Menu.Item>
-                                    {/* <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-                            <Menu.Item key="3">Tom</Menu.Item>
-                            <Menu.Item key="4">Bill</Menu.Item>
-                            <Menu.Item key="5">Alex</Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
-                            <Menu.Item key="6">Team 1</Menu.Item>
-                            <Menu.Item key="8">Team 2</Menu.Item>
-                        </SubMenu>
-                        <Menu.Item key="9" icon={<FileOutlined />}>
-                            Files
-                        </Menu.Item> */}
+
+
                                 </Menu>
                             </Sider>
                             <Layout className="site-layout">
@@ -127,8 +121,7 @@ const AdminTemplate = (props) => {
                                 </Header>
                                 <Content style={{ margin: "0 16px" }}>
                                     <Breadcrumb style={{ margin: "16px 0" }}>
-                                        {/* <Breadcrumb.Item>User</Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item> */}
+
                                     </Breadcrumb>
                                     <div
                                         className="site-layout-background"
