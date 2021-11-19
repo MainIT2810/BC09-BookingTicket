@@ -16,6 +16,7 @@ function Showtime(props) {
             maRap: '',
             giaVe: '',
         },
+
         onSubmit: async (values) => {
             try {
                 const result = await axios({
@@ -27,7 +28,7 @@ function Showtime(props) {
                         Authorization: "Bearer " + localStorage.getItem(TOKEN),
                     }
                 })
-                alert('Cập nhật Phim thành công')
+                console.log(result);
             }
             catch (err) {
                 console.log(err.response?.data)
@@ -41,7 +42,6 @@ function Showtime(props) {
         heThongRapChieu: [],
         cumRapChieu: [],
     })
-    console.log(state.cumRapChieu);
     useEffect(async () => {
         try {
             const result = await axios({

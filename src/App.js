@@ -4,7 +4,6 @@ import { Router, Switch } from 'react-router';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate'
 import Home from './pages/Home/Home';
 
-// import News from './pages/News/News';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Detail from './pages/Detail/Detail';
@@ -49,8 +48,6 @@ function App() {
 
         <CheckoutTemplate path="/checkout/:id" exact component={Checkout} />
         <CheckoutTemplate path="/profile" Component={Profile} />
-        {/* <HomeTemplate path="/" Component={} /> */}
-        {/* <HomeTemplate path="/" Component={} /> */}
         <HomeTemplate path="/home" exact Component={Home} />
         <HomeTemplate path="/detail/:id" exact Component={Detail} />
 

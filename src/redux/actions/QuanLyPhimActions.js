@@ -1,8 +1,58 @@
 import { quanLyPhimService } from "../../services/QuanLyPhimService";
-import { SET_DANH_SACH_PHIM, SET_THONG_TIN_PHIM_CHINH_SUA } from "./types/QuanLyPhimType";
+import { SET_CHI_TIET_FILM, SET_DANH_SACH_PHIM, SET_LICH_CHIEU_FILM, SET_THONG_TIN_PHIM_CHINH_SUA } from "./types/QuanLyPhimType";
 import { history } from '../../App'
 import { DOMAIN, TOKEN, TOKENCYBERSOFT } from "../../util/settings/config";
 import axios from "axios";
+
+export const layThongTinChiTietFilmAction = (id) => {
+    return async dispatch => {
+        try {
+            const result = await axios({
+                url: 'https://movienew.cybersoft.edu.vn/api/QuanLyPhim/LayThongTinPhim',
+                method: 'GET',
+                params: {
+                    MaPhim: id,
+                },
+                headers: {
+                    TokenCybersoft: TOKENCYBERSOFT
+                }
+            })
+            dispatch({
+                type: SET_CHI_TIET_FILM,
+                filmDetail: result.data.content,
+            })
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+}
+
+export const layThongTinLichChieuTheoFilmAction = (id) => {
+    return async dispatch => {
+        try {
+            const result = await axios({
+                url: 'https://movienew.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuPhim',
+                method: 'GET',
+                params: {
+                    MaPhim: id,
+                },
+                headers: {
+                    TokenCybersoft: TOKENCYBERSOFT
+                }
+            })
+            dispatch({
+                type: SET_LICH_CHIEU_FILM,
+                filmSchedule: result.data.content
+            })
+            // console.log(result.data.content)
+        }
+        catch (err) {
+            console.log(err.response?.data);
+        }
+    }
+}
+
 
 export const layDanhSachPhimAction = (tenPhim = '') => {
 
@@ -42,7 +92,6 @@ export const themPhimUploadHinhAction = (formData) => {
         }
     }
 }
-
 
 export const layThongTinPhimChinhSuaAction = (maPhim) => {
     return async dispatch => {
