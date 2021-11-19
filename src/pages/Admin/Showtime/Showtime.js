@@ -28,6 +28,7 @@ function Showtime(props) {
                         Authorization: "Bearer " + localStorage.getItem(TOKEN),
                     }
                 })
+                alert('Tạo Lịch Chiếu Phim thành công')
                 console.log(result);
             }
             catch (err) {
