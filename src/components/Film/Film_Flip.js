@@ -10,7 +10,7 @@ export default function Film_Flip(props) {
 
     return (
 
-        <div className="wrapper">
+        <div className="wrapper" id='phim'>
             <div className="list__cards">
                 <div className="card movie-1 card--watched">
                     <div className='ribbon'>

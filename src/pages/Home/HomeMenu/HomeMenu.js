@@ -102,7 +102,8 @@ export default class Demo extends React.PureComponent {
     const { tabPosition } = this.state;
     return (
       <>
-        <Tabs tabPosition={tabPosition}>{this.renderHeThongRap()}</Tabs>
+        <Tabs id="hethongrap" tabPosition={tabPosition}>{this.renderHeThongRap()}</Tabs>
+        
       </>
     );
   }

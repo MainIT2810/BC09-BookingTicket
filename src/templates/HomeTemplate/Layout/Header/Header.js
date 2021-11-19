@@ -69,17 +69,15 @@ export default function Header(props) {
     );
   };
   return (
-    <header className="p-4 bg-coolGray-100 text-coolGray-800 bg-opacity-40 bg-black text-white fixed w-full z-10">
+    <header className="p-4 bg-coolGray-100 text-coolGray-800 bg-gray-700 bg-opacity-40 text-white fixed w-full z-10">
       <div className="container flex justify-between h-16 mx-auto">
         <NavLink
           to="/"
           aria-label="Back to homepage"
           className="flex items-center p-2"
         >
-          <img
-            src="https://cyberlearn.vn/wp-content/uploads/2020/03/cyberlearn-min-new-opt2.png"
-            alt="cyberlearn.vn"
-          />
+          <img src="https://img.icons8.com/external-icongeek26-linear-colour-icongeek26/64/000000/external-movie-cinema-icongeek26-linear-colour-icongeek26.png"
+          alt="icon"/>
         </NavLink>
         <ul className="items-stretch hidden space-x-3 lg:flex">
           <li className="flex">
@@ -92,22 +90,22 @@ export default function Header(props) {
             </NavLink>
           </li>
           <li className="flex">
-            <NavLink
-              to="/contact"
+            <a
+              href="#hethongrap"
               className="flex items-center -mb-0.5 border-b-2 px-4 border-transparent text-white"
               activeClassName="border-b-2 border-white"
             >
-              Contact
-            </NavLink>
+              Cụm rạp
+            </a>
           </li>
           <li className="flex">
-            <NavLink
-              to="/news"
+            <a
+              href="#phim"
               className="flex items-center -mb-0.5 border-b-2 px-4 border-transparent text-white"
               activeClassName="border-b-2 border-white"
             >
-              News
-            </NavLink>
+              Phim
+            </a>
           </li>
         </ul>
         <div className="items-center flex-shrink-0 hidden lg:flex">

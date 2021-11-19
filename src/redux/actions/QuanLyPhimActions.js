@@ -1,11 +1,11 @@
 import { quanLyPhimService } from "../../services/QuanLyPhimService";
-import { SET_DANH_SACH_PHIM, SET_THONG_TIN_PHIM } from "./types/QuanLyPhimType";
-import {history} from '../../App'
+import { SET_DANH_SACH_PHIM, SET_THONG_TIN_PHIM_CHINH_SUA } from "./types/QuanLyPhimType";
+import { history } from '../../App'
+import { DOMAIN, TOKEN, TOKENCYBERSOFT } from "../../util/settings/config";
+import axios from "axios";
 
+export const layDanhSachPhimAction = (tenPhim = '') => {
 
-
-export const layDanhSachPhimAction = (tenPhim='') => {
-    
 
     return async (dispatch) => {
         try {
@@ -13,93 +13,107 @@ export const layDanhSachPhimAction = (tenPhim='') => {
             const result = await quanLyPhimService.layDanhSachPhim(tenPhim);
 
             //Sau khi lấy dữ liệu từ api về => redux (reducer)
-             dispatch({
-                 type:SET_DANH_SACH_PHIM,
-                 arrFilm:result.data.content
-             })
-        }catch (errors) {
-            console.log('errors',errors)
+            dispatch({
+                type: SET_DANH_SACH_PHIM,
+                arrFilm: result.data.content
+            })
+        } catch (errors) {
+            console.log('errors', errors)
         }
     };
 }
-
 export const themPhimUploadHinhAction = (formData) => {
-    return async (dispatch) => {
+    return async dispatch => {
         try {
+            const result = await axios({
+                url: `${DOMAIN}/api/QuanLyPhim/ThemPhimUploadHinh`,
+                method: "POST",
+                data: formData,
+                headers: {
+                    TokenCybersoft: TOKENCYBERSOFT
+                }
+            })
+            alert('Thêm phim thành công');
 
-
-            let result = await quanLyPhimService.themPhimUploadHinh(formData);
-            alert('Thêm phim thành công!')
-            console.log('result', result.data.content);
-
-
-            
-        } catch (errors) {
-            console.log(errors.response?.data)
+        }
+        catch (err) {
+            console.log(err.response?.data);
         }
     }
 }
 
 
-export const capNhatPhimUploadAction = (formData) => {
-    return async (dispatch) => {
+export const layThongTinPhimChinhSuaAction = (maPhim) => {
+    return async dispatch => {
         try {
+            const result = await axios({
+                url: `${DOMAIN}/api/QuanLyPhim/LayThongTinPhim`,
+                method: "GET",
+                params: {
+                    MaPhim: maPhim,
+                },
+                headers: {
+                    TokenCybersoft: TOKENCYBERSOFT
+                },
+            })
+            dispatch({
+                type: SET_THONG_TIN_PHIM_CHINH_SUA,
+                thongTinPhimChinhSua: result.data.content
+            })
+        }
+        catch (err) {
+            console.log(err.response?.data)
+        };
+    }
+}
 
 
-            let result = await quanLyPhimService.capNhatPhimUpload(formData);
-            alert('Cập nhật phim thành công!')
-            console.log('result', result.data.content);
+export const capNhatPhimAction = (formData) => {
+    return async dispatch => {
+        try {
+            const result = await axios({
+                url: `${DOMAIN}/api/QuanLyPhim/CapNhatPhimUpload`,
+                method: "POST",
+                data: formData,
+                headers: {
+                    TokenCybersoft: TOKENCYBERSOFT,
+                    Authorization: "Bearer " + localStorage.getItem(TOKEN),
+                }
+            })
+            alert('Cập nhật Phim thành công')
 
             dispatch(layDanhSachPhimAction());
             history.push('/admin/films');
 
-            
-        } catch (errors) {
-            console.log(errors.response?.data)
+        }
+        catch (err) {
+            console.log(err.response?.data);
         }
     }
 }
 
 
-
-export const layThongTinPhimAction =  (maPhim) => {
-    return async (dispatch) => {
-        try {
-            //Sử dụng tham số thamSo
-            const result = await quanLyPhimService.layThongTinPhim(maPhim);
-
-   
-
-            dispatch({
-                type:SET_THONG_TIN_PHIM,
-                thongTinPhim: result.data.content
-
-            })
-            
-        }catch (errors) {
-            console.log('errors',errors)
-        }
-    };
-}
-
-
-
 export const xoaPhimAction = (maPhim) => {
-    
-
-    return async (dispatch) => {
+    return async dispatch => {
         try {
-            //Sử dụng tham số thamSo
-            const result = await quanLyPhimService.xoaPhim(maPhim);
-            console.log('result',result.data.content);
-            alert('Xoá phim thành công !');
-            //Sau khi xoá load lại danh sách phim mới;
-            dispatch(layDanhSachPhimAction())
+            const result = await axios({
+                url: `${DOMAIN}/api/QuanLyPhim/XoaPhim`,
+                method: 'DELETE',
+                params: {
+                    MaPhim: maPhim
+                },
+                headers: {
+                    TokenCybersoft: TOKENCYBERSOFT,
+                    Authorization: "Bearer " + localStorage.getItem(TOKEN),
+                }
+            })
+            console.log(result.data.content);
+            alert("Xoá phim thành công");
+            dispatch(layDanhSachPhimAction());
 
-
-            
-        }catch (errors) {
-            console.log('errors',errors.response?.data)
+        }
+        catch (err) {
+            console.log(err.response?.data);
         }
     }
 }

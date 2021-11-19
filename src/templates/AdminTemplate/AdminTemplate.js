@@ -99,16 +99,16 @@ const AdminTemplate = (props) => {
                                             <NavLink to="/admin/users/addnew">Thêm User</NavLink>
                                         </Menu.Item>
                                     </SubMenu>
-                                    
-                                    <SubMenu key="sub2" icon={<FileOutlined />} title="Films">
+
+                                    <SubMenu key="sub2" icon={<FileOutlined />} title="Chức Năng Phim">
                                         <Menu.Item key="10" icon={<FileOutlined />}>
-                                            <NavLink to="/admin/films">Films</NavLink>
+                                            <NavLink to="/admin/films">Duyệt Film</NavLink>
                                         </Menu.Item>
+
                                         <Menu.Item key="11" icon={<FileOutlined />}>
-                                            <NavLink to="/admin/films/addnew">Add new</NavLink>
+                                            <NavLink to="/admin/films/addnew">Thêm Mới</NavLink>
                                         </Menu.Item>
                                     </SubMenu>
-
 
                                 </Menu>
                             </Sider>
