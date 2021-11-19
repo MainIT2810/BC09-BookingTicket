@@ -10,7 +10,7 @@ import {
 import { useFormik } from 'formik';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { capNhatPhimAction, layThongTinPhimChinhSuaAction} from '../../../../redux/actions/QuanLyPhimActions';
+import { capNhatPhimAction, layThongTinPhimChinhSuaAction } from '../../../../redux/actions/QuanLyPhimActions';
 import { GROUPID } from '../../../../util/settings/config';
 
 const EditFilm = (props) => {
@@ -27,7 +27,7 @@ const EditFilm = (props) => {
 
     }, [])
 
-    const { thongTinPhimChinhSua } = useSelector(state => state.FilmReducer);
+    const { thongTinPhimChinhSua } = useSelector(state => state.QuanLyPhimReducer);
     console.log({ thongTinPhimChinhSua });
 
     const formik = useFormik({

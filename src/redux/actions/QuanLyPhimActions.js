@@ -22,6 +22,7 @@ export const layDanhSachPhimAction = (tenPhim = '') => {
         }
     };
 }
+
 export const themPhimUploadHinhAction = (formData) => {
     return async dispatch => {
         try {
